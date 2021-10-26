@@ -1,0 +1,116 @@
+body {
+  background-color: #f6f4e8;
+}
+/* 麵包屑背景 */
+.bread-background {
+  background-color: #f6f4e8;
+}
+/* 控制圖片大小 */
+@media screen and (min-width: 1140px) {
+  .wrap-img {
+    width: 40%;
+  }
+}
+@media screen and (max-width: 375px) {
+  .wrap-img {
+    width: 100%;
+  }
+}
+/* 左右排版控制 */
+@media screen and (min-width: 1140px) {
+  .rocky-center {
+    display: flex;
+    justify-content: space-evenly;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .big-wrap {
+    padding: 10%;
+  }
+}
+/* 作品名稱 */
+.name {
+  font-size: x-large;
+  font-weight: bold;
+}
+/* 設計師名稱 */
+.designer {
+  font-size: small;
+  margin-bottom: 20px;
+}
+/* 單價下面的空格 */
+.rocky-price {
+  margin-bottom: 20px;
+}
+/* 購買數量 */
+.order-number {
+  border: 1px solid #1d3124;
+  padding: 0 3px 0 3px;
+  margin: 0 3px 0 3px;
+}
+/* 總價下面的空格 */
+.total-price {
+  margin-bottom: 20px;
+}
+/* 購物車按鈕下面的空格 */
+.rocky-in {
+  margin-bottom: 10px;
+  width: 250px;
+  border: 1px solid #1d3124;
+  background-color: #1d3124;
+}
+/* 結帳按鈕 */
+.rocky-debt {
+  margin-bottom: 20px;
+  width: 250px;
+  border: 1px solid #1d3124;
+}
+/* 結帳按鈕下面的備註 */
+.product-note {
+  font-size: xx-small;
+  margin-bottom: 50px;
+}
+/* 推薦欄 */
+.recommand {
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+a {
+  font-size: xx-small;
+}
+a:hover {
+  color: red;
+}
+/* 控制全部顏色 */
+.rocky-color {
+  color: #1d3124;
+}
+/* 推薦箭頭 */
+.rocky-angle {
+  color: #1d3124;
+  margin: 5px;
+}
+@media screen and (max-width: 375px) {
+  .rocky-angle {
+    display: none;
+  }
+}
+/* 推薦圖片跟箭頭置中 */
+.rocky-wrap {
+  display: flex;
+}
+.recommand {
+  margin-right: 20px;
+}
+.arrow-center {
+  display: flex;
+  align-items: center;
+}
+.rocky-left {
+  margin-right: 20px;
+}
+
+.mini-pic {
+  margin-top: 20px;
+}
