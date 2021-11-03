@@ -1,18 +1,105 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import '../styles/Product.css'
 import {
   Carousel,
-  DropdownButton,
-  Dropdown,
   Form,
   FormControl,
-  Button,
 } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import { CONNECT2 } from '../road'
+import { IMG_PATH } from '../road'
 
 function Product(props) {
-  // 利用match.params來取得url params (記得App元件中的Route要先定義)
-  // console.log('props.match.params', props.match.params)
+  // const { auth, cartCount, setCartCount } = props
+  const [data, setData] = useState({})
+  const [displayData, setDisplayData] = useState({})
+  const [keyWord, setKeyWord] = useState('')
+  const [sortBy, setSortBy] = useState('')
+  const [pageNumber, setPageNumber] = useState(1)
+  // {
+  //   id: '1',
+  //   image: 'BUY ! MINI.jpeg',
+  //   name: 'BUY ! MINI',
+  //   painter: 'DAVID KRACOV',
+  //   price: 4800,
+  //   tags: 'papercuts',
+  //   track: 'false',
+  //   created_at: '2021.10.26 22:00:00',
+  //   page: 1,
+  // },
+  useEffect(() => {
+    ;(async () => {
+      const r = await fetch(CONNECT2)
+      const obj = await r.json()
+      await setData(obj)
+      await setDisplayData(obj)
+    })()
+  }, [])
+
+  const handleSearch = (MyData, keyWord) => {
+    let newData = []
+
+    if (keyWord) {
+      newData = MyData.filter((d) => {
+        // includes -> String API
+        return d.name.includes(keyWord)
+      })
+    } else {
+      newData = [...MyData]
+    }
+
+    return newData
+  }
+  const handlePage = (MyData, pageNumber) => {
+    let newData = [...MyData]
+
+    newData = [...MyData].filter((d) => {
+      return d.page === pageNumber
+    })
+    return newData
+  }
+  const handleSort = (MyData, sortBy) => {
+    let newData = [...MyData]
+
+    // 以價格排序-由少至多
+    if (sortBy === '1') {
+      newData = [...newData].sort(
+        (a, b) => a.price - b.price
+      )
+    }
+    // 以價格排序-由多至少
+    if (sortBy === '2') {
+      newData = [...newData].sort(
+        (a, b) => b.price - a.price
+      )
+    }
+    // 預設用id 小至大
+    if (sortBy === '' && newData.length > 0) {
+      newData = [...newData].sort((a, b) => a.id - b.id)
+    }
+    return newData
+  }
+
+  useEffect(() => {
+    let newData = []
+    if (!data.rows) {
+      return
+    }
+    const MyData = data.rows
+    newData = handleSearch(MyData, keyWord)
+    newData = handlePage(newData, pageNumber)
+    newData = handleSort(newData, sortBy)
+    setDisplayData({
+      ...data,
+      rows: newData,
+      totalPages: new Array(
+        Math.ceil(newData.length / 9)
+      ).fill(0),
+      totalPages1: Math.ceil(newData.length / 9),
+    })
+  }, [data, pageNumber, keyWord, sortBy])
+
   return (
     <>
       {/* 輪播牆 */}
@@ -58,273 +145,187 @@ function Product(props) {
         <div className="row  ">
           <div className="col sorting">
             <div className="sorting-op">推薦商品</div>
-            <DropdownButton
+            {/* <DropdownButton
               id="dropdown-basic-button"
               title="排序"
             >
               <Dropdown.Item
                 href="#/action-1"
                 id="rocky-order"
+                value=""
+                onChange={(e) => setSortBy(e.target.value)}
               >
                 最新上架
               </Dropdown.Item>
               <Dropdown.Item
                 href="#/action-2"
                 id="rocky-order"
+                value="1"
+                onChange={(e) => setSortBy(e.target.value)}
               >
                 價格由低到高
               </Dropdown.Item>
               <Dropdown.Item
                 href="#/action-3"
                 id="rocky-order"
+                value="2"
+                onChange={(e) => setSortBy(e.target.value)}
               >
                 價格由高到低
               </Dropdown.Item>
-            </DropdownButton>
+            </DropdownButton> */}
           </div>
         </div>
       </div>
       {/* 搜尋欄 */}
       <div className="container">
         <div className="row">
-          <div className="rocky-form">
-            <Form inline>
-              <FormControl
-                type="text"
-                placeholder="Search"
-                className="mr-sm-2"
-              />
-              <Button
-                variant="outline-dark"
-                className="rocky-button"
+          <div className="col rocky-search">
+            <div>
+              <Form inline>
+                <FormControl
+                  type="text"
+                  placeholder="Search"
+                  className="mr-sm-2 rocky-little"
+                  value={keyWord}
+                  onChange={(e) => {
+                    setKeyWord(e.target.value)
+                  }}
+                />
+                {/* <Button
+                  variant="outline-dark"
+                  className="rocky-button"
+                >
+                  <div className="rocky-search">Search</div>
+                </Button> */}
+              </Form>
+            </div>
+            {/* 排序 */}
+            <div className="btn-group">
+              <select
+                className="form-select form-select-sm  rocky-order"
+                aria-label=".form-select-sm example"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
               >
-                <div className="rocky-search">Search</div>
-              </Button>
-            </Form>
+                <option value="">請選擇排序</option>
+                <option value="1">
+                  以價格排序-由少至多
+                </option>
+                <option value="2">
+                  以價格排序-由多至少
+                </option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
       {/* <!-- 推薦商品 --> */}
       <div className="container">
         <div className="row">
-          <div className="col-12 col-sm-6 col-md-4 ">
-            <div className="card card-color top-space">
-              <div data-aos="zoom-in">
-                <img
-                  src="./image/JUNGLE LOVE XXL.jpeg"
-                  className="card-img-top"
-                  alt="..."
-                />
-                <div className="card-body bottom-space">
-                  <div className="card-text name-large">
-                    JUNGLE LOVE XXL
+          {displayData.rows
+            ? displayData.rows.map((v, i) => {
+                return (
+                  <div
+                    className="col-12 col-sm-6 col-md-4"
+                    key={i}
+                  >
+                    <div className="card card-color top-space">
+                      <div data-aos="zoom-in">
+                        <img
+                          src={IMG_PATH + '/' + v.image}
+                          className="card-img-top"
+                          alt="..."
+                        />
+                        <div className="card-body bottom-space">
+                          <div className="card-text name-large">
+                            {v.name}
+                          </div>
+                          <div className="card-text">
+                            {v.painter}
+                          </div>
+                          <div className="card-text">
+                            NT$ {v.price}
+                          </div>
+                          <i className="fas fa-shopping-cart cart-color"></i>
+                          <span className="rocky-love">
+                            123
+                          </span>
+                          <i className="fas fa-heart cart-color"></i>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="card-text">PLUM</div>
-                  <div className="card-text">NT$ 3800</div>
-                  <i className="fas fa-shopping-cart cart-color"></i>
-                  <span className="rocky-love">123</span>
-                  <i className="fas fa-heart cart-color"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 ">
-            <div className="card card-color top-space">
-              <img
-                src="./image/LA VILLE DU CIEL.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body bottom-space">
-                <div className="card-text name-large">
-                  LA VILLE DU CIEL
-                </div>
-                <div className="card-text">
-                  YOEL BENHARROUCHE
-                </div>
-                <div className="card-text">NT$ 8800</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 ">
-            <div className="card card-color top-space">
-              <img
-                src="./image/ICON BETTY.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body bottom-space">
-                <div className="card-text name-large">
-                  ICON BETTY
-                </div>
-                <div className="card-text">TOMMY</div>
-                <div className="card-text">NT$ 3400</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 ">
-            <div className="card card-color top-space">
-              <img
-                src="./image/SHE SAID YES.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body bottom-space">
-                <div className="card-text name-large">
-                  SHE SAID YES
-                </div>
-                <div className="card-text">
-                  KUNST MET EEN R
-                </div>
-                <div className="card-text">NT$ 5000</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 ">
-            <div className="card card-color top-space">
-              <img
-                src="./image/SELL!.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body bottom-space">
-                <div className="card-text name-large">
-                  SELL!
-                </div>
-                <div className="card-text">
-                  DAVID KRACOV
-                </div>
-                <div className="card-text">NT$ 1100</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 ">
-            <div className="card card-color top-space">
-              <img
-                src="./image/GANGSTA BARDOT.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body bottom-space">
-                <div className="card-text name-large">
-                  GANGSTA BARDOT
-                </div>
-                <div className="card-text">CLEM$</div>
-                <div className="card-text">NT$ 7500</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 ">
-            <div className="card card-color top-space">
-              <img
-                src="./image/INSPIRATION ARTISTIQUE.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body bottom-space">
-                <div className="card-text name-large">
-                  INSPIRATION ARTISTIQUE
-                </div>
-                <div className="card-text">
-                  YOEL BENHARROUCHE
-                </div>
-                <div className="card-text">NT$ 6600</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 ">
-            <div className="card card-color top-space">
-              <img
-                src="./image/OSTRICHES MEETING.jpg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body bottom-space">
-                <div className="card-text name-large">
-                  OSTRICHES MEETING
-                </div>
-                <div className="card-text">作者</div>
-                <div className="card-text">NT$ 5800</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 ">
-            <div className="card card-color top-space">
-              <img
-                src="./image/VEIL OF LUXURY BUTTERFLIES.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body bottom-space">
-                <div className="card-text name-large">
-                  VEIL OF LUXURY BUTTERFLIES
-                </div>
-                <div className="card-text">
-                  JONAS LERICHE
-                </div>
-                <div className="card-text">NT$ 4000</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          {/* <!-- 分頁按鈕 --> */}
+                )
+              })
+            : ''}
+        </div>
+      </div>
+      {/* <!-- 分頁按鈕 --> */}
+      <div className="container">
+        <div className="row">
           <nav aria-label="Page navigation example">
             <ul className="pagination rocky-page">
-              <li className="page-item">
-                <a
+              {/* 向上一頁 */}
+              <li
+                className={
+                  pageNumber === 1
+                    ? 'page-item disabled'
+                    : 'page-item'
+                }
+              >
+                <Link
+                  to={'/product'}
                   className="page-link"
-                  href="/#"
-                  aria-label="Previous"
+                  onClick={() => {
+                    setPageNumber(pageNumber - 1)
+                  }}
                 >
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
+                  Previous
+                </Link>
               </li>
-              <li className="page-item">
-                <a className="page-link" href="/#">
-                  1
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="/#">
-                  2
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="/#">
-                  3
-                </a>
-              </li>
-              <li className="page-item">
-                <a
+              {/* 當前頁面 */}
+              {data.totalPages
+                ? data.totalPages.map((v, i) => {
+                    return (
+                      <li
+                        className={
+                          { pageNumber } === { i }
+                            ? 'page-item active'
+                            : 'page-item'
+                        }
+                        key={i}
+                      >
+                        <Link
+                          to={'/product'}
+                          className="page-link"
+                          onClick={() => {
+                            setPageNumber(i + 1)
+                          }}
+                        >
+                          {i + 1}
+                        </Link>
+                      </li>
+                    )
+                  })
+                : ''}
+              {/* 向後一頁 */}
+              <li
+                className={
+                  pageNumber === data.totalPages1
+                    ? 'page-item disabled'
+                    : 'page-item'
+                }
+              >
+                <Link
+                  to={'/product'}
                   className="page-link"
-                  href="/#"
-                  aria-label="Next"
+                  onClick={() => {
+                    setPageNumber(pageNumber + 1)
+                  }}
                 >
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
+                  Next
+                </Link>
               </li>
             </ul>
           </nav>
@@ -366,13 +367,16 @@ function Product(props) {
               </div>
             </div>
           </div>
+
           <div className="col-12 col-sm-6 col-md-4 ">
             <div className="card card-color top-space cart-bottom">
-              <img
-                src="./image/LA MARIEE DU CIEL.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
+              <Link to="/detail">
+                <img
+                  src="./image/LA MARIEE DU CIEL.jpeg"
+                  className="card-img-top"
+                  alt="..."
+                />
+              </Link>
               <div className="card-body bottom-space">
                 <div className="card-text name-large">
                   LA MARIEE DU CIEL
@@ -387,6 +391,7 @@ function Product(props) {
               </div>
             </div>
           </div>
+
           <div className="col-12 col-sm-6 col-md-4 ">
             <div className="card card-color top-space cart-bottom">
               <img

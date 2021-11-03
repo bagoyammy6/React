@@ -1,9 +1,31 @@
 import '../styles/Home.css'
 import { Carousel } from 'react-bootstrap'
-import { BsFillCartPlusFill } from 'react-icons/bs'
+import { useEffect, useState } from 'react'
+import { CONNECT } from '../road'
+import { IMG_PATH } from '../road'
+import { Link } from 'react-router-dom'
 
 function Home(props) {
-  const { auth } = props
+  // const { auth, cartCount, setCartCount } = props
+  let [data, setData] = useState({})
+  // {
+  //   id: '1',
+  //   image: 'BUY ! MINI.jpeg',
+  //   name: 'BUY ! MINI',
+  //   painter: 'DAVID KRACOV',
+  //   price: 4800,
+  //   tags: 'papercuts',
+  //   track: 'false',
+  //   created_at: '2021.10.26 22:00:00',
+  // },
+  useEffect(() => {
+    ;(async () => {
+      const r = await fetch(CONNECT)
+      const obj = await r.json()
+      setData(obj)
+      // console.log(obj.rows)
+    })()
+  }, [])
 
   return (
     <>
@@ -193,650 +215,42 @@ function Home(props) {
       {/* <!-- 精選作品欄位 --> */}
       <div className="container">
         <div className="row">
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/BUY ! MINI.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  BUY ! MINI
-                </div>
-                <div className="card-text">
-                  DAVID KRACOV
-                </div>
-                <div className="card-text">NT$ 4800</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/MARYLIN SHINES - PURPLE.jpg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  MARYLIN SHINES - PURPLE
-                </div>
-                <div className="card-text">AMY GOLD</div>
-                <div className="card-text">NT$ 5200</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/AMBER SPLASH COCO.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  AMBER SPLASH COCO
-                </div>
-                <div className="card-text">PLUM</div>
-                <div className="card-text">NT$ 3800</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/ICONS WILL DISCUSS.jpg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  ICONS WILL DISCUSS
-                </div>
-                <div className="card-text">
-                  ANGELO ACCARDI
-                </div>
-                <div className="card-text">NT$ 7200</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/LES SENTEURS DU PARADIS.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  LES SENTEURS DU PARADIS
-                </div>
-                <div className="card-text">
-                  YOEL BENHARROUCHE
-                </div>
-                <div className="card-text">NT$ 9800</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/AUDREY INDIANA.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  AUDREY INDIANA
-                </div>
-                <div className="card-text">CLEM$</div>
-                <div className="card-text">NT$ 4600</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/AUTOMNE LANDSCAPE.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  AUTOMNE LANDSCAPE
-                </div>
-                <div className="card-text">
-                  CALMAN SHEMI
-                </div>
-                <div className="card-text">NT$ 13000</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/KISS OF DELFT.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  KISS OF DELFT
-                </div>
-                <div className="card-text">
-                  ONAS LERICHE
-                </div>
-                <div className="card-text">NT$ 6700</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/THE GOOD LIFE.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  THE GOOD LIFE
-                </div>
-                <div className="card-text">
-                  KUNST MET EEN R
-                </div>
-                <div className="card-text">NT$ 4100</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/BOUQUET DU PARADIS.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  BOUQUET DU PARADIS
-                </div>
-                <div className="card-text">
-                  YOEL BENHARROUCHE
-                </div>
-                <div className="card-text">NT$ 6300</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/COMIC-POP.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  COMIC-POP
-                </div>
-                <div className="card-text">AMY GOLD</div>
-                <div className="card-text">NT$ 790</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/AT THE DRIVE IN.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  AT THE DRIVE IN
-                </div>
-                <div className="card-text">TOMMY</div>
-                <div className="card-text">NT$ 8300</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/BUMBLEBEE CANS.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  BUMBLEBEE CANS
-                </div>
-                <div className="card-text">GUMM</div>
-                <div className="card-text">NT$ 7500</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/APACHE MUSIC.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  APACHE MUSIC
-                </div>
-                <div className="card-text">CLEM$</div>
-                <div className="card-text">NT$ 12500</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/HOMER'S FRIEND.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  HOMER'S FRIEND
-                </div>
-                <div className="card-text">
-                  ANGELO ACCARDI
-                </div>
-                <div className="card-text">NT$ 8300</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/A L’ECOUTE DES VIBRATIONS PROFONDES.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  A L’ECOUTE DES VIBRATIONS PROFONDES
-                </div>
-                <div className="card-text">
-                  YOEL BENHARROUCHE
-                </div>
-                <div className="card-text">NT$ 4900</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/ALIENATION.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  ALIENATION
-                </div>
-                <div className="card-text">
-                  JONAS LERICHE
-                </div>
-                <div className="card-text">NT$ 5000</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/BEAUTIFUL BUTTERFLIES.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  BEAUTIFUL BUTTERFLIES
-                </div>
-                <div className="card-text">
-                  CALMAN SHEMI
-                </div>
-                <div className="card-text">NT$ 8800</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/BATMAN DARK KNIGHT.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  BATMAN DARK KNIGHT
-                </div>
-                <div className="card-text">TOMMY</div>
-                <div className="card-text">NT$ 2900</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/CAMPBELL II.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  CAMPBELL II
-                </div>
-                <div className="card-text">AMY GOLD</div>
-                <div className="card-text">NT$ 890</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/DOUBLE PLEASURE - DIPTYCH.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  DOUBLE PLEASURE - DIPTYCH
-                </div>
-                <div className="card-text">TOMMY</div>
-                <div className="card-text">NT$ 1900</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/COFFEE CHIQUE 2.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  COFFEE CHIQUE 2
-                </div>
-                <div className="card-text">
-                  KUNST MET EEN R
-                </div>
-                <div className="card-text">NT$ 9700</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/FREEDOMNATION.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  FREEDOMNATION
-                </div>
-                <div className="card-text">
-                  JONAS LERICHE
-                </div>
-                <div className="card-text">NT$ 4620</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/GO WITH THE FLOW - WHITE.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  GO WITH THE FLOW - WHITE
-                </div>
-                <div className="card-text">
-                  CALMAN SHEMI
-                </div>
-                <div className="card-text">NT$ 1500</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/GOLD ARLEQUINO QUATUOR.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  GOLD ARLEQUINO QUATUOR
-                </div>
-                <div className="card-text">
-                  CALMAN SHEMI
-                </div>
-                <div className="card-text">NT$ 13200</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/GONDOLES BLEU NUIT.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  GONDOLES BLEU NUIT
-                </div>
-                <div className="card-text">LIRONE</div>
-                <div className="card-text">NT$ 9670</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/KHERPI.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  KHERPI
-                </div>
-                <div className="card-text">
-                  JONAS LERICHE
-                </div>
-                <div className="card-text">NT$ 8400</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/THE LAST STAR.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  THE LAST STAR
-                </div>
-                <div className="card-text">TOMMY</div>
-                <div className="card-text">NT$ 8200</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/TIME SQUARE.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  TIME SQUARE
-                </div>
-                <div className="card-text">LIRONE</div>
-                <div className="card-text">NT$ 3900</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/WE LOVE ICE CREAM 3.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  WE LOVE ICE CREAM 3
-                </div>
-                <div className="card-text">
-                  KUNST MET EEN R
-                </div>
-                <div className="card-text">NT$ 7500</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/MARIO PEZ - MEDIUM.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  MARIO PEZ - MEDIUM
-                </div>
-                <div className="card-text">
-                  HAREL JOSEFSON
-                </div>
-                <div className="card-text">NT$ 900</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card p-1 card-color">
-              <img
-                src="./image/COMIC-BANG.jpeg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="card-text name-large">
-                  COMIC-BANG
-                </div>
-                <div className="card-text">AMY GOLD</div>
-                <div className="card-text">NT$ 7200</div>
-                <i className="fas fa-shopping-cart cart-color"></i>
-                <span className="rocky-love">123</span>
-                <i className="fas fa-heart cart-color"></i>
-              </div>
-            </div>
-          </div>
+          {data.rows
+            ? data.rows.map((v, i) => {
+                return (
+                  <div
+                    className="col-12 col-sm-6 col-md-4 col-lg-3"
+                    key={i}
+                  >
+                    <div className="card p-1 card-color">
+                      <div data-aos="zoom-in">
+                        <img
+                          src={IMG_PATH + '/' + v.image}
+                          className="card-img-top"
+                          alt="..."
+                        />
+                        <div className="card-body">
+                          <div className="card-text name-large">
+                            {v.name}
+                          </div>
+                          <div className="card-text">
+                            {v.painter}
+                          </div>
+                          <div className="card-text">
+                            NT$ {v.price}
+                          </div>
+                          <i className="fas fa-shopping-cart cart-color"></i>
+                          <span className="rocky-love">
+                            123
+                          </span>
+                          <i className="fas fa-heart cart-color"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })
+            : ''}
         </div>
       </div>
       {/* <!-- 作品欄位下面的字 --> */}
@@ -845,9 +259,11 @@ function Home(props) {
         <div className="middle-part">
           <div className="top"></div>
           <div className="middle">
-            <a href="/#" className="a-size">
-              看更多作品
-            </a>
+            <Link to="./product">
+              <a href="/#" className="a-size">
+                看更多作品
+              </a>
+            </Link>
           </div>
           <div className="bottom"></div>
         </div>

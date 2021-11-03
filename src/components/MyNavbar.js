@@ -1,11 +1,11 @@
 import React from 'react'
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap'
+import { Navbar, Nav } from 'react-bootstrap'
 import '../styles/navstyle.css'
 // 要使用能有active css效果的NavLink元件
 import { NavLink } from 'react-router-dom'
 
 function MyNavbar(props) {
-  const { auth } = props
+  // const { auth } = props
 
   return (
     <>

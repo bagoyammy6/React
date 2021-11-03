@@ -1,15 +1,33 @@
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import MultiLevelBreadCrumb from '../components/MultiLevelBreadCrumb'
 import '../styles/ProductDetail.css'
-import {
-  AiOutlineLine,
-  AiOutlinePlus,
-} from 'react-icons/ai'
+import { useEffect, useState } from 'react'
+// import { CONNECT3 } from '../road'
+import { IMG_PATH } from '../road'
 
 function ProductDetail(props) {
   // console.log(props)
+  // const { auth } = props
+  const [data, setData] = useState({})
+  const [displayData, setDisplayData] = useState({})
+  const [pageNumber, setPageNumber] = useState(1)
 
-  const { auth } = props
+  useEffect(() => {
+    ;(async () => {
+      let query = '?page=' + parseInt(pageNumber)
+      // console.log(query)
+      let link =
+        'http://localhost:3001/product/findsix/' + query
+      // console.log(link)
+      const r = await fetch(link)
+      // console.log(link)
+      const obj = await r.json()
+      await setData(obj)
+      await setDisplayData(obj)
+    })()
+  }, [pageNumber])
+  // console.log(pageNumber)
+  // console.log(data.totalPages)
 
   return (
     <>
@@ -52,15 +70,11 @@ function ProductDetail(props) {
           <div className="product-num">
             <div className="rocky-num rocky-color">
               數量：
-              <a href="#/">
-                <AiOutlineLine />
-              </a>
-              <a href="#/" className="order-number">
-                1
-              </a>
-              <a href="#/">
-                <AiOutlinePlus />
-              </a>
+              <div className="rocky-buy">1</div>
+              <div className="rocky-UD">
+                <i className="far fa-caret-square-up"></i>
+                <i className="far fa-caret-square-down"></i>
+              </div>
             </div>
             <div className="total-price rocky-color">
               總價：2000元
@@ -79,7 +93,7 @@ function ProductDetail(props) {
               type="button"
               className="btn btn-light btn-lg rocky-debt rocky-color"
             >
-              <i class="far fa-heart"></i> 加入追蹤
+              <i className="far fa-heart"></i> 加入追蹤
             </button>
           </div>
           <div className="product-note">
@@ -101,45 +115,68 @@ function ProductDetail(props) {
             </div>
             <div className="rocky-wrap">
               <div className="arrow-center rocky-left">
-                <i className="fas fa-angle-double-left rocky-angle"></i>
+                <Link
+                  to={'/detail'}
+                  // className="page-link"
+                  onClick={() => {
+                    {
+                      pageNumber < 2
+                        ? setPageNumber(data.totalPages)
+                        : setPageNumber(pageNumber - 1)
+                    }
+                  }}
+                >
+                  <i className="fas fa-caret-square-left rocky-angle"></i>
+                </Link>
               </div>
-              <div className="recommand">
-                <img
-                  src="./image/SHIT.jpeg"
-                  alt=""
-                  width="200px"
-                />
+              <div className="container">
+                <div className="row">
+                  {displayData.rows
+                    ? displayData.rows.map((v, i) => {
+                        return (
+                          <div
+                            className="col-12 col-sm-6 col-md-4 col-lg-2"
+                            key={i}
+                          >
+                            <div className="card card-color top-space">
+                              <div data-aos="zoom-in">
+                                <img
+                                  src={
+                                    IMG_PATH + '/' + v.image
+                                  }
+                                  className="card-img-top"
+                                  alt="..."
+                                />
+                                <div className="card-body bottom-space rocky-last">
+                                  <div className="card-text name-large rocky-last">
+                                    {v.name}
+                                  </div>
+                                  <div className="card-text rocky-last">
+                                    NT$ {v.price}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })
+                    : ''}
+                </div>
               </div>
-              <div className="recommand">
-                <img
-                  src="./image/COMIC - POW.jpeg"
-                  alt=""
-                  width="200px"
-                />
-              </div>
-              <div className="recommand">
-                <img
-                  src="./image/INDIANA LION.jpeg"
-                  alt=""
-                  width="200px"
-                />
-              </div>
-              <div className="recommand">
-                <img
-                  src="./image/LES ANGES DE JERUSALEM.jpeg"
-                  alt=""
-                  width="200px"
-                />
-              </div>
-              <div className="recommand">
-                <img
-                  src="./image/MOULIN ROUGE.jpeg"
-                  alt=""
-                  width="200px"
-                />
-              </div>
-              <div className="arrow-center">
-                <i className="fas fa-angle-double-right rocky-angle"></i>
+              <div className="arrow-center disabled">
+                <Link
+                  to={'/detail'}
+                  // className="page-link"
+                  onClick={() => {
+                    {
+                      pageNumber === data.totalPages
+                        ? setPageNumber(1)
+                        : setPageNumber(pageNumber + 1)
+                    }
+                  }}
+                >
+                  <i className="fas fa-caret-square-right rocky-angle"></i>
+                </Link>
               </div>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import React from 'react'
 import '../styles/footerstyle.css'
+import { withRouter } from 'react-router-dom'
 function MyFooter(props) {
   return (
     <>
@@ -52,4 +53,4 @@ function MyFooter(props) {
   )
 }
 
-export default MyFooter
+export default withRouter(MyFooter)

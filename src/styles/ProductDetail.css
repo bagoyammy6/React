@@ -43,10 +43,21 @@ body {
   margin-bottom: 20px;
 }
 /* 購買數量 */
-.order-number {
-  border: 1px solid #1d3124;
-  padding: 0 3px 0 3px;
-  margin: 0 3px 0 3px;
+.rocky-num {
+  display: flex;
+}
+.rocky-buy {
+  border: 1px solid transparent;
+  padding: 2px 5px 0 5px;
+  background-color: white;
+  transform: translateY(-3px);
+}
+.rocky-UD {
+  transform: translateY(-3px);
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
 }
 /* 總價下面的空格 */
 .total-price {
@@ -75,6 +86,7 @@ body {
   font-size: large;
   font-weight: bold;
   margin-bottom: 10px;
+  padding-left: 20px;
 }
 a {
   font-size: xx-small;
@@ -90,6 +102,7 @@ a:hover {
 .rocky-angle {
   color: #1d3124;
   margin: 5px;
+  font-size: x-large;
 }
 @media screen and (max-width: 375px) {
   .rocky-angle {
@@ -100,17 +113,14 @@ a:hover {
 .rocky-wrap {
   display: flex;
 }
-.recommand {
-  margin-right: 20px;
-}
 .arrow-center {
   display: flex;
   align-items: center;
 }
-.rocky-left {
-  margin-right: 20px;
-}
-
 .mini-pic {
   margin-top: 20px;
+}
+/* 推薦圖片字體大小 */
+.rocky-last {
+  font-size: 10px;
 }
