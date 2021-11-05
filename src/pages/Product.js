@@ -232,11 +232,15 @@ function Product(props) {
                   >
                     <div className="card card-color top-space">
                       <div data-aos="zoom-in">
-                        <img
-                          src={IMG_PATH + '/' + v.image}
-                          className="card-img-top"
-                          alt="..."
-                        />
+                        <Link
+                          to={'/product/detail/' + v.sid}
+                        >
+                          <img
+                            src={IMG_PATH + '/' + v.image}
+                            className="card-img-top"
+                            alt="..."
+                          />
+                        </Link>
                         <div className="card-body bottom-space">
                           <div className="card-text name-large">
                             {v.name}
@@ -370,7 +374,7 @@ function Product(props) {
 
           <div className="col-12 col-sm-6 col-md-4 ">
             <div className="card card-color top-space cart-bottom">
-              <Link to="/detail">
+              <Link to="/product/detail">
                 <img
                   src="./image/LA MARIEE DU CIEL.jpeg"
                   className="card-img-top"

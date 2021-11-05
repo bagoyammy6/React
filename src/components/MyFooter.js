@@ -20,7 +20,10 @@ function MyFooter(props) {
         </div>
         <div className="col-4  rocky-mobile">
           <div className="d-flex justify-content-center">
-            <img src="./image/logo.svg" alt="" />
+            <img
+              src="http://localhost:3000/image/logo.svg"
+              alt=""
+            />
           </div>
         </div>
         <div className="col-4 align-self-center mb-5 rocky-mobile">
@@ -45,7 +48,10 @@ function MyFooter(props) {
         </div>
         <div className="col rocky-center">
           <div className="d-flex justify-content-center">
-            <img src="./image/logo.svg" alt="" />
+            <img
+              src="http://localhost:3000/image/logo.svg"
+              alt=""
+            />
           </div>
         </div>
       </div>

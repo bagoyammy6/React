@@ -29,12 +29,14 @@ import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   const [auth, setAuth] = useState(false)
+  const [buyNumber, setBuyNumber] = useState(1)
+  const [track, setTrack] = useState(0)
 
   return (
     <Router>
       <>
         {/* LOGO+標題+導覽列+上方選單 */}
-        <MyNavbar auth={auth} />
+        <MyNavbar auth={auth} track={track} />
         {/* 主內容區 */}
         <MainContent>
           {/* <MultiLevelBreadcrumb /> */}
@@ -46,11 +48,17 @@ function App() {
               <Route exact path="/">
                 <Home auth={auth} />
               </Route>
+              <Route exact path="/product/detail/:id?">
+                <ProductDetail
+                  auth={auth}
+                  buyNumber={buyNumber}
+                  setBuyNumber={setBuyNumber}
+                  track={track}
+                  setTrack={setTrack}
+                />
+              </Route>
               <Route exact path="/product">
                 <Product auth={auth} />
-              </Route>
-              <Route path="/detail">
-                <ProductDetail auth={auth} />
               </Route>
               <Route path="/student">
                 <Student />

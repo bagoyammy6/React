@@ -5,7 +5,7 @@ import '../styles/navstyle.css'
 import { NavLink } from 'react-router-dom'
 
 function MyNavbar(props) {
-  // const { auth } = props
+  const { auth, setAuth, track, cartCount } = props
 
   return (
     <>
@@ -18,7 +18,10 @@ function MyNavbar(props) {
       >
         <Navbar.Brand href="#home">
           <div className="ronglogo">
-            <img src="./image/logo.svg" alt="" />
+            <img
+              src="http://localhost:3000/image/logo.svg"
+              alt=""
+            />
           </div>
         </Navbar.Brand>
 
@@ -32,11 +35,15 @@ function MyNavbar(props) {
               <p>首頁</p>
             </Nav.Link>
             {/* 設計師 */}
-            <Nav.Link as={NavLink} to="/detail">
+            <Nav.Link
+              as={NavLink}
+              exact
+              to="/product/detail"
+            >
               <p>設計師</p>
             </Nav.Link>
             {/* 作品集 */}
-            <Nav.Link as={NavLink} to="/product">
+            <Nav.Link as={NavLink} exact to="/product">
               <p>作品集</p>
             </Nav.Link>
             {/* 聯繫我們 */}
@@ -76,6 +83,11 @@ function MyNavbar(props) {
                 <i className="far fa-heart"></i>
               </p>
             </Nav.Link>
+            <div className="cart-circle mt-2">
+              <div className="cart-number ">
+                <p>{track ? track : 0}</p>
+              </div>
+            </div>
             <Nav.Link eventKey={2} href="#memes">
               <p>
                 <i className="fas fa-shopping-cart"></i>
@@ -83,7 +95,7 @@ function MyNavbar(props) {
             </Nav.Link>
             <div className="cart-circle mt-2">
               <div className="cart-number ">
-                <p>5</p>
+                <p>{cartCount ? cartCount : 0}</p>
               </div>
             </div>
           </Nav>

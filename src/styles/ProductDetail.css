@@ -48,12 +48,12 @@ body {
 }
 .rocky-buy {
   border: 1px solid transparent;
-  padding: 2px 5px 0 5px;
+  padding: 9px 10px 0 10px;
   background-color: white;
-  transform: translateY(-3px);
+  transform: translateY(-10px);
 }
 .rocky-UD {
-  transform: translateY(-3px);
+  transform: translateY(-10px);
   margin-left: 10px;
   display: flex;
   flex-direction: column;

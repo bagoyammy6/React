@@ -2,15 +2,40 @@ import { withRouter, Link } from 'react-router-dom'
 import MultiLevelBreadCrumb from '../components/MultiLevelBreadCrumb'
 import '../styles/ProductDetail.css'
 import { useEffect, useState } from 'react'
-// import { CONNECT3 } from '../road'
+import { CONNECT4 } from '../road'
 import { IMG_PATH } from '../road'
 
 function ProductDetail(props) {
   // console.log(props)
-  // const { auth } = props
+  const {
+    auth,
+    cartCount,
+    setCartCount,
+    buyNumber,
+    setBuyNumber,
+    track,
+    setTrack,
+  } = props
   const [data, setData] = useState({})
   const [displayData, setDisplayData] = useState({})
   const [pageNumber, setPageNumber] = useState(1)
+  const [singleData, setSingleData] = useState({})
+
+  useEffect(() => {
+    ;(async () => {
+      const id = props.match.params.id
+      // console.log(id)
+      if (id) {
+        const r = await fetch(CONNECT4 + id)
+        const obj = await r.json()
+        await setSingleData(obj.data)
+      } else {
+        const r = await fetch(CONNECT4 + 3)
+        const obj = await r.json()
+        await setSingleData(obj.data)
+      }
+    })()
+  }, [props.match.params.id])
 
   useEffect(() => {
     ;(async () => {
@@ -27,7 +52,7 @@ function ProductDetail(props) {
     })()
   }, [pageNumber])
   // console.log(pageNumber)
-  // console.log(data.totalPages)
+  // console.log(singleData.sid)
 
   return (
     <>
@@ -41,7 +66,11 @@ function ProductDetail(props) {
         {/* <!-- 商品圖 --> */}
         <div className="wrap-img">
           <img
-            src="./image/LA MARIEE DU CIEL.jpeg"
+            src={
+              singleData.image
+                ? IMG_PATH + '/' + singleData.image
+                : IMG_PATH + '/AMBER SPLASH COCO.jpeg'
+            }
             alt=""
             width="100%"
           />
@@ -50,40 +79,77 @@ function ProductDetail(props) {
         <div className="big-wrap">
           <div className="product-name">
             <div className="name rocky-color">
-              LA MARIEE DU CIEL
+              {singleData.name}
             </div>
             <div className="designer rocky-color">
-              YOEL BENHARROUCHE
+              {singleData.painter}
             </div>
           </div>
           <div className="product-size">
             <div className="rocky-category rocky-color">
-              分類：紙雕
+              分類：{singleData.tags}
             </div>
             <div className="rocky-size rocky-color">
               尺寸：50 X 43cm
             </div>
             <div className="rocky-price rocky-color">
-              單價：2000元
+              單價：{singleData.price}元
             </div>
           </div>
           <div className="product-num">
             <div className="rocky-num rocky-color">
               數量：
-              <div className="rocky-buy">1</div>
+              <div className="rocky-buy">{buyNumber}</div>
               <div className="rocky-UD">
-                <i className="far fa-caret-square-up"></i>
-                <i className="far fa-caret-square-down"></i>
+                <div
+                  className="rocky-add"
+                  onClick={() => {
+                    setBuyNumber(
+                      buyNumber === 3 ? 3 : buyNumber + 1
+                    )
+                  }}
+                >
+                  <i className="far fa-caret-square-up"></i>
+                </div>
+                <div
+                  className="rocky-reduce"
+                  onClick={() => {
+                    setBuyNumber(
+                      buyNumber < 2 ? 1 : buyNumber - 1
+                    )
+                  }}
+                >
+                  <i className="far fa-caret-square-down"></i>
+                </div>
               </div>
             </div>
             <div className="total-price rocky-color">
-              總價：2000元
+              總價：{singleData.price * buyNumber}元
             </div>
           </div>
           <div className="shopping-btn">
             <button
               type="button"
               className="btn btn-dark btn-lg rocky-in"
+              onClick={() => {
+                // 加到localStorage
+                const myCart = localStorage.getItem('cart')
+                  ? JSON.parse(localStorage.getItem('cart'))
+                  : []
+
+                const newMyCart = [
+                  ...myCart,
+                  singleData,
+                  buyNumber,
+                ]
+                localStorage.setItem(
+                  'cart',
+                  JSON.stringify(newMyCart)
+                )
+
+                // 每次一按加入，選單列購物數量+1
+                setCartCount(cartCount + 1)
+              }}
             >
               加入購物車
             </button>
@@ -92,6 +158,35 @@ function ProductDetail(props) {
             <button
               type="button"
               className="btn btn-light btn-lg rocky-debt rocky-color"
+              onClick={() => {
+                const myTrack = localStorage.getItem(
+                  'track'
+                )
+                  ? JSON.parse(
+                      localStorage.getItem('track')
+                    )
+                  : []
+                const newMyTrack = [...myTrack, singleData]
+                if (myTrack[0]) {
+                  for (let e of newMyTrack) {
+                    if (e.sid === singleData.sid) {
+                      continue
+                    } else {
+                      localStorage.setItem(
+                        'track',
+                        JSON.stringify(newMyTrack)
+                      )
+                      setTrack(track + 1)
+                    }
+                  }
+                } else {
+                  localStorage.setItem(
+                    'track',
+                    JSON.stringify(newMyTrack)
+                  )
+                  setTrack(track + 1)
+                }
+              }}
             >
               <i className="far fa-heart"></i> 加入追蹤
             </button>
@@ -115,19 +210,17 @@ function ProductDetail(props) {
             </div>
             <div className="rocky-wrap">
               <div className="arrow-center rocky-left">
-                <Link
-                  to={'/detail'}
+                <span
+                  // to={'/product/detail'}
                   // className="page-link"
                   onClick={() => {
-                    {
-                      pageNumber < 2
-                        ? setPageNumber(data.totalPages)
-                        : setPageNumber(pageNumber - 1)
-                    }
+                    pageNumber < 2
+                      ? setPageNumber(data.totalPages)
+                      : setPageNumber(pageNumber - 1)
                   }}
                 >
                   <i className="fas fa-caret-square-left rocky-angle"></i>
-                </Link>
+                </span>
               </div>
               <div className="container">
                 <div className="row">
@@ -140,13 +233,22 @@ function ProductDetail(props) {
                           >
                             <div className="card card-color top-space">
                               <div data-aos="zoom-in">
-                                <img
-                                  src={
-                                    IMG_PATH + '/' + v.image
+                                <Link
+                                  to={
+                                    '/product/detail/' +
+                                    v.sid
                                   }
-                                  className="card-img-top"
-                                  alt="..."
-                                />
+                                >
+                                  <img
+                                    src={
+                                      IMG_PATH +
+                                      '/' +
+                                      v.image
+                                    }
+                                    className="card-img-top"
+                                    alt="..."
+                                  />
+                                </Link>
                                 <div className="card-body bottom-space rocky-last">
                                   <div className="card-text name-large rocky-last">
                                     {v.name}
@@ -164,19 +266,17 @@ function ProductDetail(props) {
                 </div>
               </div>
               <div className="arrow-center disabled">
-                <Link
-                  to={'/detail'}
+                <span
+                  // to={'/product/detail'}
                   // className="page-link"
                   onClick={() => {
-                    {
-                      pageNumber === data.totalPages
-                        ? setPageNumber(1)
-                        : setPageNumber(pageNumber + 1)
-                    }
+                    pageNumber === data.totalPages
+                      ? setPageNumber(1)
+                      : setPageNumber(pageNumber + 1)
                   }}
                 >
                   <i className="fas fa-caret-square-right rocky-angle"></i>
-                </Link>
+                </span>
               </div>
             </div>
           </div>
