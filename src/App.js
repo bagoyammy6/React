@@ -4,7 +4,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // 頁面用元件
 import Home from './pages/Home'
@@ -31,6 +31,20 @@ function App() {
   const [auth, setAuth] = useState(false)
   const [buyNumber, setBuyNumber] = useState(1)
   const [track, setTrack] = useState(0)
+
+  useEffect(() => {
+    // 問伺服器是否有會員登入
+    // 如果有登入，設定auth為true
+    //setAuth(true)
+
+    //請localstorage中的購物車數量
+    const myTrack = localStorage.getItem('track')
+      ? JSON.parse(localStorage.getItem('track'))
+      : []
+
+    // 設定為陣列的長度(成員數量)
+    setTrack(myTrack.length)
+  }, [])
 
   return (
     <Router>

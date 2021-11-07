@@ -51,8 +51,6 @@ function ProductDetail(props) {
       await setDisplayData(obj)
     })()
   }, [pageNumber])
-  // console.log(pageNumber)
-  // console.log(singleData.sid)
 
   return (
     <>
@@ -167,18 +165,20 @@ function ProductDetail(props) {
                     )
                   : []
                 const newMyTrack = [...myTrack, singleData]
+                // console.log([...myTrack, singleData])
                 if (myTrack[0]) {
-                  for (let e of newMyTrack) {
+                  // 如何讓singleData.sid不會跟e.sid重複
+                  // 關鍵在於myTrack裡面不能有singleData
+                  for (let e of myTrack) {
                     if (e.sid === singleData.sid) {
-                      continue
-                    } else {
-                      localStorage.setItem(
-                        'track',
-                        JSON.stringify(newMyTrack)
-                      )
-                      setTrack(track + 1)
+                      return
                     }
                   }
+                  localStorage.setItem(
+                    'track',
+                    JSON.stringify(newMyTrack)
+                  )
+                  setTrack(track + 1)
                 } else {
                   localStorage.setItem(
                     'track',
