@@ -1,11 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Navbar, Nav } from 'react-bootstrap'
 import '../styles/navstyle.css'
 // 要使用能有active css效果的NavLink元件
-import { NavLink } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 
 function MyNavbar(props) {
-  const { auth, setAuth, track, cartCount } = props
+  const { auth, setAuth, track, cartCount, id } = props
+  const [member, setMember] = useState([])
+
+  const logout = () => {
+    setAuth(false)
+    deleteMemberLocalStorage()
+    props.history.push('/')
+  }
+
+  function deleteMemberLocalStorage() {
+    localStorage.removeItem('token')
+    const newMember =
+      localStorage.removeItem('member') || '[]'
+    setMember(JSON.parse(newMember))
+    localStorage.removeItem('list')
+  }
 
   return (
     <>
@@ -24,7 +39,6 @@ function MyNavbar(props) {
             />
           </div>
         </Navbar.Brand>
-
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mx-auto mt-3">
@@ -43,7 +57,7 @@ function MyNavbar(props) {
               <p>設計師</p>
             </Nav.Link>
             {/* 作品集 */}
-            <Nav.Link as={NavLink} exact to="/product">
+            <Nav.Link as={NavLink} to="/product">
               <p>作品集</p>
             </Nav.Link>
             {/* 聯繫我們 */}
@@ -73,11 +87,34 @@ function MyNavbar(props) {
             </Nav.Link>
           </Nav>
           <Nav className="mt-3 mr-3">
-            <Nav.Link href="#deets">
-              <p>
-                <i className="far fa-user"></i>
-              </p>
-            </Nav.Link>
+            {auth ? (
+              <>
+                <Nav.Link
+                  as={NavLink}
+                  to={'/member_center/' + id.sid}
+                >
+                  <p>會員中心</p>
+                </Nav.Link>
+                <Nav.Link>
+                  <p onClick={logout}>登出</p>
+                </Nav.Link>
+              </>
+            ) : (
+              ''
+            )}
+
+            {auth ? (
+              ''
+            ) : (
+              <>
+                <Nav.Link as={NavLink} to="/login">
+                  <p>
+                    <i className="far fa-user"></i>
+                  </p>
+                </Nav.Link>
+              </>
+            )}
+
             <Nav.Link href="#deets">
               <p>
                 <i className="far fa-heart"></i>
@@ -85,17 +122,17 @@ function MyNavbar(props) {
             </Nav.Link>
             <div className="cart-circle mt-2">
               <div className="cart-number ">
-                <p>{track ? track : 0}</p>
+                <p>{auth && track ? track : 0}</p>
               </div>
             </div>
-            <Nav.Link eventKey={2} href="#memes">
+            <Nav.Link as={NavLink} to="/order-steps">
               <p>
                 <i className="fas fa-shopping-cart"></i>
               </p>
             </Nav.Link>
             <div className="cart-circle mt-2">
               <div className="cart-number ">
-                <p>{cartCount ? cartCount : 0}</p>
+                <p>{auth && cartCount ? cartCount : 0}</p>
               </div>
             </div>
           </Nav>
@@ -105,4 +142,4 @@ function MyNavbar(props) {
   )
 }
 
-export default MyNavbar
+export default withRouter(MyNavbar)

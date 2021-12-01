@@ -11,7 +11,7 @@ import { CONNECT2 } from '../road'
 import { IMG_PATH } from '../road'
 
 function Product(props) {
-  // const { auth, cartCount, setCartCount } = props
+  const { setTrack, setCartCount } = props
   const [data, setData] = useState({})
   const [displayData, setDisplayData] = useState({})
   const [keyWord, setKeyWord] = useState('')
@@ -28,6 +28,22 @@ function Product(props) {
   //   created_at: '2021.10.26 22:00:00',
   //   page: 1,
   // },
+  useEffect(() => {
+    // 問伺服器是否有會員登入
+    // 如果有登入，設定auth為true
+    //setAuth(true)
+    //請localstorage中的購物車數量
+    const myCart = localStorage.getItem('cart')
+      ? JSON.parse(localStorage.getItem('cart'))
+      : []
+    const myTrack = localStorage.getItem('track')
+      ? JSON.parse(localStorage.getItem('track'))
+      : []
+    // 設定為陣列的長度(成員數量)
+    setTrack(myTrack.length)
+    setCartCount(myCart.length)
+  }, [])
+
   useEffect(() => {
     ;(async () => {
       const r = await fetch(CONNECT2)
@@ -371,7 +387,6 @@ function Product(props) {
               </div>
             </div>
           </div>
-
           <div className="col-12 col-sm-6 col-md-4 ">
             <div className="card card-color top-space cart-bottom">
               <Link to="/product/detail">
@@ -395,7 +410,6 @@ function Product(props) {
               </div>
             </div>
           </div>
-
           <div className="col-12 col-sm-6 col-md-4 ">
             <div className="card card-color top-space cart-bottom">
               <img
